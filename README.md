@@ -1,88 +1,66 @@
-# Autonomous HR Chatbot built using ChatGPT, LangChain, Pinecone and Streamlit
-
-
-
-
-Companion Reading: [Creating a (mostly) Autonomous HR Assistant with ChatGPT and LangChain’s Agents and Tools](https://medium.com/@stephen.bonifacio/creating-a-mostly-autonomous-hr-assistant-with-chatgpt-and-langchains-agents-and-tools-1cdda0aa70ef)
-
----
-### TL;DR/Description
----
-This is a prototype enterprise application - an autonomous agent that is able to answer HR queries using the tools it has on hand.
-It was made using LangChain's agents and tools modules, using Pinecone as vector database and powered by ChatGPT or gpt-3.5-turbo. The front-end is Streamlit using the streamlit_chat component.
-
-Tools currently assigned (with more on the way):
-1. Timekeeping Policies - A ChatGPT generated sample HR policy document. Embeddings were created for this doc using OpenAI’s *text-embedding-ada-002* model and stored in a Pinecone index.
-2. Employee Data - A csv file containing dummy employee data (e.g. name, supervisor, # of leaves etc). It's loaded as a pandas dataframe and manipulated by the LLM using LangChain's PythonAstREPLTool
-3. Calculator - this is LangChain's calculator chain module, LLMMathChain
-
-#### Sample Chat
-
-![sample_chat](assets/sample_chat.png)
-
-#### Sample Tool Use
-
-![sample_tool_use](assets/sample_tool_use.png)
-
----
-### Instructions
----
-
-I made this prototype using Azure deployments as my company is an Azure customer.  
-I created a backend file called `hr_agent_backend_local.py` for those that does not want to use Azure.  
-This is does not use any Azure components - the API is from platform.openai.com, the csv file is stored locally(i.e. on your own computer)
-
-#### How to use this repo
-
-1. Install python 3.10. [Windows](https://www.tomshardware.com/how-to/install-python-on-windows-10-and-11#:~:text=1.,and%20download%20the%20Windows%20installer.&text=2.,is%20added%20to%20your%20path.), [Mac](https://www.codingforentrepreneurs.com/guides/install-python-on-macos/) 
-2. Clone the repo to a local directory.
-3. Navigate to the local directory and run this command in your terminal to install all prerequisite modules - `pip install -r requirements.txt`
-4. Input your own API keys in the `hr_agent_backend_local.py` file (or `hr_agent_backend_azure.py` if you want to use the azure version; just uncomment it in the frontend.py file)
-5. Run `streamlit run hr_agent_frontent.py` in your terminal
-
-#### Storing Embeddings in Pinecone
-
-1. Create a Pinecone account in [pinecone.io](pinecone.io) - there is a free tier.  Take note of the Pinecone API and environment values.
-2. Run the notebook 'store_embeddings_in_pinecone.ipynb'. Replace the Pinecone and OpenAI API keys (for  the embedding model) with your own.
-
-
----
-### Tech Stack
----
-
-[Azure OpenAI Service](https://azure.microsoft.com/en-us/products/cognitive-services/openai-service) - the OpenAI service offering for Azure customers.  
-[LangChain](https://python.langchain.com/docs/get_started/introduction.html) - development frame work for building apps around LLMs.    
-[Pinecone](https://www.pinecone.io/) - the vector database for storing the embeddings.  
-[Streamlit](https://streamlit.io/) - used for the front end. Lightweight framework for deploying python web apps.  
-[Azure Data Lake](https://azure.microsoft.com/en-us/solutions/data-lake) - for landing the employee data csv files. Any other cloud storage should work just as well (blob, S3 etc).    
-[Azure Data Factory](https://azure.microsoft.com/en-ca/products/data-factory/) - used to create the data pipeline.  
-[SAP HCM](https://www.sap.com/sea/products/hcm/what-is-sap-hr.html) - the source system for employee data.   
-
-### Video Demo 
----
-
-[Youtube Link](https://www.youtube.com/watch?v=id7XRcEIBvg&ab_channel=StephenBonifacio)
-
----
-### Roadmap
----
-Currently working on adding the following tools using OpenAI's function calling feature:
-
-1. Currency Exchange Rate tool - this tool will have access to the internet to check the current FX rate. Sample HR Use Case: a contractor paid in USD can ask how much he will be paid in his/her local currency - e.g. 'How much is my salary this month in PHP?  
-2. Tax Explainer - the employee can ask how his/her tax (and other deductions) are computed for the payroll period based on tax rates and statutory deduction tables e.g. taxable gross, social security deductions etc. The chatbot will illustrate how the tax/deduction was computed based on the user's own payroll data/values. Idea stolen (with permission) from Jem Rodil :)
-
-
-Other suggestions welcome. ☺️  
-Just open a new topic in the `discussions` section.
-
-
----
-### Author
----
-
-#### Stephen Bonifacio
-
-Feel free to connect with me on:
-
-Linkedin: https://www.linkedin.com/in/stephenbonifacio/  
-Twitter: https://twitter.com/Stepanogil  
+<div class="Box-sc-g0xbh4-0 bJMeLZ js-snippet-clipboard-copy-unpositioned" data-hpc="true"><article class="markdown-body entry-content container-lg" itemprop="text"><div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用 ChatGPT、LangChain、Pinecone 和 Streamlit 构建的自主 HR 聊天机器人</font></font></h1><a id="user-content-autonomous-hr-chatbot-built-using-chatgpt-langchain-pinecone-and-streamlit" class="anchor" aria-label="永久链接：使用 ChatGPT、LangChain、Pinecone 和 Streamlit 构建的自主 HR 聊天机器人" href="#autonomous-hr-chatbot-built-using-chatgpt-langchain-pinecone-and-streamlit"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">配套阅读：</font></font><a href="https://medium.com/@stephen.bonifacio/creating-a-mostly-autonomous-hr-assistant-with-chatgpt-and-langchains-agents-and-tools-1cdda0aa70ef" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用 ChatGPT 和 LangChain 的代理和工具创建一个（大部分）自主的 HR 助理</font></font></a></p>
+<hr>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">TL;DR/描述</font></font></h3><a id="user-content-tldrdescription" class="anchor" aria-label="永久链接：TL;DR/描述" href="#tldrdescription"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<hr>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">这是一个原型企业应用程序 - 一个能够使用现有工具回答 HR 查询的自主代理。它是使用 LangChain 的代理和工具模块制作的，使用 Pinecone 作为矢量数据库，并由 ChatGPT 或 gpt-3.5-turbo 提供支持。前端是使用streamlit_chat 组件的Streamlit。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">当前分配的工具（更多工具正在准备中）：</font></font></p>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">计时政策 - ChatGPT 生成的示例 HR 政策文档。使用 OpenAI 的</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">text-embedding-ada-002</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">模型为此文档创建嵌入</font><font style="vertical-align: inherit;">，并将其存储在 Pinecone 索引中。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">员工数据 - 包含虚拟员工数据（例如姓名、主管、休假数等）的 csv 文件。它作为 pandas 数据帧加载，并由 LLM 使用 LangChain 的 PythonAstREPLTool 进行操作</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">计算器 - 这是LangChain的计算器链模块LLMMathChain</font></font></li>
+</ol>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">聊天示例</font></font></h4><a id="user-content-sample-chat" class="anchor" aria-label="永久链接：示例聊天" href="#sample-chat"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/stepanogil/autonomous-hr-chatbot/blob/main/assets/sample_chat.png"><img src="/stepanogil/autonomous-hr-chatbot/raw/main/assets/sample_chat.png" alt="样本聊天" style="max-width: 100%;"></a></p>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">示例工具使用</font></font></h4><a id="user-content-sample-tool-use" class="anchor" aria-label="永久链接：示例工具使用" href="#sample-tool-use"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/stepanogil/autonomous-hr-chatbot/blob/main/assets/sample_tool_use.png"><img src="/stepanogil/autonomous-hr-chatbot/raw/main/assets/sample_tool_use.png" alt="样本工具使用" style="max-width: 100%;"></a></p>
+<hr>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">指示</font></font></h3><a id="user-content-instructions" class="anchor" aria-label="永久链接：说明" href="#instructions"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<hr>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我使用 Azure 部署制作了这个原型，因为我的公司是 Azure 客户。</font></font><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+我创建了一个后端文件，</font></font><code>hr_agent_backend_local.py</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">供那些不想使用 Azure 的人使用。</font></font><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+这不使用任何 Azure 组件 - API 来自 platform.openai.com，csv 文件存储在本地（即在您自己的计算机上）</font></font></p>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如何使用这个仓库</font></font></h4><a id="user-content-how-to-use-this-repo" class="anchor" aria-label="永久链接：如何使用此存储库" href="#how-to-use-this-repo"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装Python 3.10。</font></font><a href="https://www.tomshardware.com/how-to/install-python-on-windows-10-and-11#:~:text=1.,and%20download%20the%20Windows%20installer.&amp;text=2.,is%20added%20to%20your%20path." rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">视窗</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">系统</font></font><a href="https://www.codingforentrepreneurs.com/guides/install-python-on-macos/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&ZeroWidthSpace;</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">将存储库克隆到本地目录。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">导航到本地目录并在终端中运行此命令以安装所有必备模块 -</font></font><code>pip install -r requirements.txt</code></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在文件中输入您自己的 API 密钥</font></font><code>hr_agent_backend_local.py</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">（或者</font></font><code>hr_agent_backend_azure.py</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您想使用天蓝色版本；只需在 frontend.py 文件中取消注释即可）</font></font></li>
+<li><font style="vertical-align: inherit;"></font><code>streamlit run hr_agent_frontent.py</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在你的终端中</font><font style="vertical-align: inherit;">运行</font></font></li>
+</ol>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">将嵌入存储在 Pinecone 中</font></font></h4><a id="user-content-storing-embeddings-in-pinecone" class="anchor" aria-label="永久链接：在 Pinecone 中存储嵌入" href="#storing-embeddings-in-pinecone"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"></font><a href="/stepanogil/autonomous-hr-chatbot/blob/main/pinecone.io"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在pinecone.io</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">中创建一个 Pinecone 帐户</font><font style="vertical-align: inherit;">- 有一个免费套餐。记下 Pinecone API 和环境值。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">运行笔记本“store_embeddings_in_pinecone.ipynb”。将 Pinecone 和 OpenAI API 密钥（用于嵌入模型）替换为您自己的密钥。</font></font></li>
+</ol>
+<hr>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">技术堆栈</font></font></h3><a id="user-content-tech-stack" class="anchor" aria-label="永久链接：技术堆栈" href="#tech-stack"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<hr>
+<p dir="auto"><a href="https://azure.microsoft.com/en-us/products/cognitive-services/openai-service" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Azure OpenAI 服务</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- 为 Azure 客户提供的 OpenAI 服务。</font></font><br>
+<a href="https://python.langchain.com/docs/get_started/introduction.html" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">LangChain</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> - 围绕法学硕士构建应用程序的开发框架。</font></font><br>
+<a href="https://www.pinecone.io/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Pinecone</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> - 用于存储嵌入的矢量数据库。</font></font><br>
+<a href="https://streamlit.io/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Streamlit</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> - 用于前端。用于部署 python Web 应用程序的轻量级框架。</font></font><br>
+<a href="https://azure.microsoft.com/en-us/solutions/data-lake" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Azure Data Lake</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> - 用于登陆员工数据 csv 文件。任何其他云存储都应该同样有效（blob、S3 等）。</font></font><br>
+<a href="https://azure.microsoft.com/en-ca/products/data-factory/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Azure 数据工厂</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">- 用于创建数据管道。</font></font><br>
+<a href="https://www.sap.com/sea/products/hcm/what-is-sap-hr.html" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SAP HCM</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> - 员工数据的源系统。</font></font></p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">视频演示</font></font></h3><a id="user-content-video-demo" class="anchor" aria-label="永久链接：视频演示" href="#video-demo"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<hr>
+<p dir="auto"><a href="https://www.youtube.com/watch?v=id7XRcEIBvg&amp;ab_channel=StephenBonifacio" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Youtube 链接</font></font></a></p>
+<hr>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">路线图</font></font></h3><a id="user-content-roadmap" class="anchor" aria-label="永久链接：路线图" href="#roadmap"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<hr>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">目前正在使用 OpenAI 的函数调用功能添加以下工具：</font></font></p>
+<ol dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">货币汇率工具 - 该工具可以访问互联网来检查当前的外汇汇率。人力资源用例示例：以美元付款的承包商可以询问他/她将以当地货币支付多少钱 - 例如“我这个月的工资是多少 PHP？”</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">税务解释器 - 员工可以询问如何根据税率和法定扣除表（例如应税总额、社会保障扣除额等）计算工资期间的税款（和其他扣除额）。聊天机器人将说明税款/扣除额是如何计算的根据用户自己的工资数据/值计算。想法（经许可）从杰姆·罗迪尔（Jem Rodil）窃取:)</font></font></li>
+</ol>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">欢迎其他建议。</font></font><g-emoji class="g-emoji" alias="relaxed"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">☺️</font></font></g-emoji><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+只需在该部分中打开一个新主题即可</font></font><code>discussions</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+<hr>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">作者</font></font></h3><a id="user-content-author" class="anchor" aria-label="永久链接： 作者" href="#author"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<hr>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">斯蒂芬·博尼法西奥</font></font></h4><a id="user-content-stephen-bonifacio" class="anchor" aria-label="永久链接：斯蒂芬·博尼法西奥" href="#stephen-bonifacio"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">请随时通过以下方式与我联系：</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">领英： https: </font></font><a href="https://www.linkedin.com/in/stephenbonifacio/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">//www.linkedin.com/in/stephenbonifacio/</font></font></a><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+推特： https: </font></font><a href="https://twitter.com/Stepanogil" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">//twitter.com/Stepanogil</font></font></a></p>
+</article></div>
